@@ -418,11 +418,52 @@ function boostFavorites(dogs, sortKey) {
   return [...fav, ...rest];
 }
 
-/** One short line for the card (photos + name + tap for more). */
-function cardFactsLine(dog) {
-  const age = hasText(dog.age) ? String(dog.age).trim() : "Age?";
-  const w = typeof dog.weightLbs === "number" && !Number.isNaN(dog.weightLbs) ? `${dog.weightLbs} lbs` : "Weight?";
-  return `${age} · ${w}`;
+/** Compact “—” when missing so cards stay honest at a glance. */
+function cardMetaValue(val) {
+  return hasText(val) ? escapeHtml(String(val).trim()) : "—";
+}
+
+function cardWeightCell(dog, meta) {
+  const target = meta?.targetWeightLbs;
+  if (typeof dog.weightLbs === "number" && !Number.isNaN(dog.weightLbs)) {
+    const match =
+      target && dog.weightLbs >= target.min && dog.weightLbs <= target.max
+        ? ` <span class="badge badge--match">${target.min}–${target.max} lbs</span>`
+        : "";
+    return `${dog.weightLbs} lbs${match}`;
+  }
+  return "—";
+}
+
+function cardMetaHtml(dog, meta) {
+  return `
+    <dl class="dog-card__meta">
+      <div class="dog-card__meta-item">
+        <dt>Fee</dt><dd>${cardMetaValue(dog.adoptionFee)}</dd>
+      </div>
+      <div class="dog-card__meta-item">
+        <dt>Breed</dt><dd>${cardMetaValue(dog.breed)}</dd>
+      </div>
+      <div class="dog-card__meta-item">
+        <dt>Age</dt><dd>${cardMetaValue(dog.age)}</dd>
+      </div>
+      <div class="dog-card__meta-item">
+        <dt>Weight</dt><dd class="dog-card__weight-dd">${cardWeightCell(dog, meta)}</dd>
+      </div>
+      <div class="dog-card__meta-item">
+        <dt>Sex</dt><dd>${cardMetaValue(dog.sex)}</dd>
+      </div>
+      <div class="dog-card__meta-item">
+        <dt>Color</dt><dd>${cardMetaValue(dog.color)}</dd>
+      </div>
+    </dl>
+    <div class="dog-card__tags">
+      ${
+        dog.cuddleScore
+          ? `<span class="badge badge--cuddle" title="Cuddliness">${escapeHtml(formatCuddle(dog.cuddleScore))}</span>`
+          : `<span class="badge badge--muted">Cuddliness —</span>`
+      }
+    </div>`;
 }
 
 function renderCarouselMarkup(urls, dogId, dotsClass = "carousel__dots") {
@@ -512,7 +553,7 @@ function renderCard(dog, meta) {
     ${renderCarouselMarkup(urls, dog.id)}
     <div class="dog-card__body">
       <h2 class="dog-card__name">${escapeHtml(dog.name)}</h2>
-      <p class="dog-card__facts">${escapeHtml(cardFactsLine(dog))}</p>
+      ${cardMetaHtml(dog, meta)}
       <p class="dog-card__peek">${escapeHtml(dog.summary)}</p>
       <div class="dog-card__row">
         <label class="dog-card__compare"><input type="checkbox" data-compare-toggle="${escapeHtml(dog.id)}" ${inCompare ? "checked" : ""} /> Compare</label>
