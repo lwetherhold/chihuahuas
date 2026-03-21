@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content="Hand-picked adoptable chihuahuas — details in one place." />
     <meta name="color-scheme" content="dark light" />
     <title>Chihuahuas for Grandma</title>
@@ -33,17 +33,17 @@
           <p class="weight-note" id="weight-note" hidden></p>
         </div>
         <div class="header-tools">
-          <label class="sort-label" for="sort-select">Sort</label>
+          <label class="sort-label" for="sort-select">Order</label>
           <select id="sort-select" class="sort-select" aria-label="Sort dogs">
-            <option value="compatibility-desc">Best match first</option>
-            <option value="favorites-first">Favorites first (then best match)</option>
-            <option value="name-asc">Name (A–Z)</option>
-            <option value="age-asc">Age (youngest)</option>
-            <option value="age-desc">Age (oldest)</option>
-            <option value="distance-asc">Distance (nearest)</option>
-            <option value="distance-desc">Distance (farthest)</option>
-            <option value="weight-asc">Weight (lightest)</option>
-            <option value="weight-desc">Weight (heaviest)</option>
+            <option value="compatibility-desc">Best match</option>
+            <option value="favorites-first">Saved first</option>
+            <option value="name-asc">Name A–Z</option>
+            <option value="age-asc">Youngest</option>
+            <option value="age-desc">Oldest</option>
+            <option value="distance-asc">Nearest</option>
+            <option value="distance-desc">Farthest</option>
+            <option value="weight-asc">Lightest</option>
+            <option value="weight-desc">Heaviest</option>
           </select>
           <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="true" title="Toggle light/dark theme">
             <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">🌙</span>
@@ -55,9 +55,9 @@
     </header>
 
     <section class="compat-banner wrap" id="compat-banner" aria-labelledby="compat-heading" hidden>
-      <h2 class="compat-heading" id="compat-heading">How we rank matches</h2>
+      <h2 class="compat-heading" id="compat-heading">Match score</h2>
       <p class="compat-intro">
-        Each dog gets a <strong>match score</strong> (0–100) from weight (closer to ~5–6 lbs is better), how cuddly they seem, and gentle penalties if the listing sounds very high-energy. You can override the score in the data file when you disagree.
+        Higher is a better fit for a small, cuddly dog (~5–6 lbs). Tap a dog for full info.
       </p>
       <ul class="compat-legend">
         <li><span class="compat-pill compat-pill--ex">Excellent</span> 85–100</li>
@@ -69,45 +69,55 @@
     </section>
 
     <section class="toolbar wrap" id="toolbar" hidden>
-      <div class="toolbar-grid">
-        <div class="toolbar-field toolbar-field--grow">
-          <label for="search-input">Search</label>
-          <input type="search" id="search-input" class="toolbar-input" placeholder="Name, breed, location, ID…" autocomplete="off" />
-        </div>
-        <div class="toolbar-field">
-          <label for="filter-min-tier">Minimum match tier</label>
-          <select id="filter-min-tier" class="toolbar-input">
-            <option value="any">Any</option>
-            <option value="gte40">Okay or better (40+)</option>
-            <option value="gte55">Good or better (55+)</option>
-            <option value="gte70">Strong or better (70+)</option>
-            <option value="gte85">Excellent only (85+)</option>
-          </select>
-        </div>
-        <div class="toolbar-field">
-          <label for="filter-care">Where they live</label>
-          <select id="filter-care" class="toolbar-input">
-            <option value="any">Any</option>
-            <option value="shelter">Shelter / on-site</option>
-            <option value="foster">Foster home</option>
-            <option value="unknown">Not specified</option>
-          </select>
-        </div>
-        <div class="toolbar-field">
-          <label for="filter-max-dist">Max distance (mi)</label>
-          <input type="number" id="filter-max-dist" class="toolbar-input" placeholder="Any" min="0" step="0.1" />
-        </div>
-        <div class="toolbar-field">
-          <label for="filter-breed">Breed contains</label>
-          <input type="text" id="filter-breed" class="toolbar-input" placeholder="Any" />
-        </div>
-        <div class="toolbar-field toolbar-field--checks">
-          <label class="check-label"><input type="checkbox" id="filter-favorites-only" /> Favorites only</label>
-        </div>
-        <div class="toolbar-actions">
-          <button type="button" class="btn-secondary" id="filter-clear">Clear filters</button>
-        </div>
+      <div class="toolbar-search">
+        <label for="search-input">Find</label>
+        <input
+          type="search"
+          id="search-input"
+          class="toolbar-input toolbar-input--search"
+          placeholder="Name or place…"
+          autocomplete="off"
+          enterkeyhint="search"
+        />
       </div>
+      <details class="toolbar-filters" id="toolbar-filters">
+        <summary class="toolbar-filters__summary">Filters</summary>
+        <div class="toolbar-grid">
+          <div class="toolbar-field">
+            <label for="filter-min-tier">At least this match</label>
+            <select id="filter-min-tier" class="toolbar-input">
+              <option value="any">Any</option>
+              <option value="gte40">Okay+ (40)</option>
+              <option value="gte55">Good+ (55)</option>
+              <option value="gte70">Strong+ (70)</option>
+              <option value="gte85">Top (85)</option>
+            </select>
+          </div>
+          <div class="toolbar-field">
+            <label for="filter-care">Where</label>
+            <select id="filter-care" class="toolbar-input">
+              <option value="any">Any</option>
+              <option value="shelter">Shelter</option>
+              <option value="foster">Foster</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+          <div class="toolbar-field">
+            <label for="filter-max-dist">Max miles</label>
+            <input type="number" id="filter-max-dist" class="toolbar-input" placeholder="—" min="0" step="0.1" inputmode="decimal" />
+          </div>
+          <div class="toolbar-field">
+            <label for="filter-breed">Breed</label>
+            <input type="text" id="filter-breed" class="toolbar-input" placeholder="Any" autocapitalize="words" />
+          </div>
+          <div class="toolbar-field toolbar-field--checks">
+            <label class="check-label"><input type="checkbox" id="filter-favorites-only" /> Saved only</label>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn-secondary" id="filter-clear">Reset</button>
+          </div>
+        </div>
+      </details>
       <p class="toolbar-hint" id="filter-count" aria-live="polite"></p>
     </section>
 
@@ -122,13 +132,13 @@
 
     <div class="compare-dock" id="compare-dock" hidden>
       <span id="compare-dock-label">Compare</span>
-      <button type="button" class="btn-compare-open" id="compare-open" disabled>Open compare</button>
+      <button type="button" class="btn-compare-open" id="compare-open" disabled>Open</button>
       <button type="button" class="btn-link" id="compare-clear">Clear</button>
     </div>
 
     <footer class="site-footer">
       <div class="wrap">
-        <p>Made with love. This site only shows what you put in the data file — it never invents facts about a dog.</p>
+        <p class="footer-line">Info comes from your list. Always double-check with the shelter.</p>
       </div>
     </footer>
 
@@ -160,7 +170,7 @@
         <button type="button" class="modal-close" id="compare-modal-close" aria-label="Close compare">&times;</button>
         <div class="modal-inner" id="compare-modal-inner">
           <h2 id="compare-modal-title">Compare dogs</h2>
-          <p class="compare-intro">Pick up to three dogs using the checkboxes on the cards. Information is only what you added in <code>dogs.json</code>.</p>
+          <p class="compare-intro">Choose up to three dogs on the cards. Same info as your data file.</p>
           <div id="compare-table-wrap"></div>
         </div>
       </div>

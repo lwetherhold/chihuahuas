@@ -391,16 +391,11 @@ function boostFavorites(dogs, sortKey) {
   return [...fav, ...rest];
 }
 
-function weightHtml(dog, meta) {
-  const target = meta?.targetWeightLbs;
-  if (typeof dog.weightLbs === "number" && !Number.isNaN(dog.weightLbs)) {
-    const match =
-      target && dog.weightLbs >= target.min && dog.weightLbs <= target.max
-        ? ` <span class="badge badge--match">${target.min}–${target.max} lbs</span>`
-        : "";
-    return `<span class="stat"><span class="stat__label">Weight</span> <span class="stat__value">${dog.weightLbs} lbs</span>${match}</span>`;
-  }
-  return `<span class="stat"><span class="stat__label">Weight</span> <span class="stat__value">Not listed</span> <span class="badge badge--missing-weight">Ask</span></span>`;
+/** One short line for the card (photos + name + tap for more). */
+function cardFactsLine(dog) {
+  const age = hasText(dog.age) ? String(dog.age).trim() : "Age?";
+  const w = typeof dog.weightLbs === "number" && !Number.isNaN(dog.weightLbs) ? `${dog.weightLbs} lbs` : "Weight?";
+  return `${age} · ${w}`;
 }
 
 function renderCarouselMarkup(urls, dogId, dotsClass = "carousel__dots") {
@@ -445,10 +440,8 @@ function wireCarousel(container, dogId) {
   if (count <= 1) return;
 
   let idx = 0;
-  let paused = false;
 
   const tick = () => {
-    if (paused) return;
     idx = (idx + 1) % count;
     setActiveSlide(container, idx);
   };
@@ -458,13 +451,6 @@ function wireCarousel(container, dogId) {
     timer = window.setInterval(tick, 4200);
     carouselTimers.push(timer);
   }
-
-  container.addEventListener("mouseenter", () => {
-    paused = true;
-  });
-  container.addEventListener("mouseleave", () => {
-    paused = false;
-  });
 
   container.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-carousel-dot]");
@@ -486,8 +472,6 @@ function renderCard(dog, meta) {
   const compat = computeCompatibility(dog, meta);
   const tier = tierClassName(compat.score);
   const urls = getPhotoUrls(dog);
-  const personality = getPersonality(dog);
-  const persoDisplay = personality || "Not specified on listing.";
   const isFav = favoriteSet.has(dog.id);
   const inCompare = compareIds.includes(dog.id);
 
@@ -496,31 +480,20 @@ function renderCard(dog, meta) {
   li.innerHTML = `
     <button type="button" class="dog-card__fav ${isFav ? "is-fav" : ""}" data-favorite-toggle="${escapeHtml(
       dog.id
-    )}" aria-pressed="${isFav}" aria-label="${isFav ? "Remove favorite" : "Add favorite"}">${isFav ? "♥" : "♡"}</button>
-    <div class="dog-card__match-ring ${tier}" title="${escapeHtml(compat.label)} match">${compat.score}</div>
+    )}" aria-pressed="${isFav}" aria-label="${isFav ? "Remove saved dog" : "Save dog"}">${isFav ? "♥" : "♡"}</button>
+    <div class="dog-card__match-ring ${tier}" title="${escapeHtml(compat.label)}">${compat.score}</div>
     ${renderCarouselMarkup(urls, dog.id)}
     <div class="dog-card__body">
       <h2 class="dog-card__name">${escapeHtml(dog.name)}</h2>
-      <div class="dog-card__stats">
-        <span class="stat"><span class="stat__label">Age</span> <span class="stat__value">${escapeHtml(dog.age || MISSING)}</span></span>
-        ${weightHtml(dog, meta)}
-        ${dog.sex ? `<span class="stat"><span class="stat__label">Sex</span> <span class="stat__value">${escapeHtml(dog.sex)}</span></span>` : ""}
-        ${dog.breed ? `<span class="stat"><span class="stat__label">Breed</span> <span class="stat__value">${escapeHtml(dog.breed)}</span></span>` : ""}
-        ${cuddleLine(dog)}
+      <p class="dog-card__facts">${escapeHtml(cardFactsLine(dog))}</p>
+      <p class="dog-card__peek">${escapeHtml(dog.summary)}</p>
+      <div class="dog-card__row">
+        <label class="dog-card__compare"><input type="checkbox" data-compare-toggle="${escapeHtml(dog.id)}" ${inCompare ? "checked" : ""} /> Compare</label>
+        <button type="button" class="dog-card__btn" data-open="${escapeHtml(dog.id)}">Details</button>
       </div>
-      <p class="dog-card__summary">${escapeHtml(dog.summary)}</p>
-      <p class="dog-card__personality-label">Personality</p>
-      <p class="dog-card__personality">${escapeHtml(persoDisplay)}</p>
-      <label class="dog-card__compare"><input type="checkbox" data-compare-toggle="${escapeHtml(dog.id)}" ${inCompare ? "checked" : ""} /> Compare</label>
-      <button type="button" class="dog-card__btn" data-open="${escapeHtml(dog.id)}">Full details</button>
     </div>
   `;
   return li;
-}
-
-function cuddleLine(dog) {
-  if (!dog.cuddleScore) return "";
-  return `<span class="badge" title="Lap / cuddle estimate">${escapeHtml(formatCuddle(dog.cuddleScore))}</span>`;
 }
 
 function renderModalCarousel(urls, modalId) {
@@ -556,19 +529,10 @@ function wireModalCarousel(container, modalId) {
   if (count <= 1 || reduce) return;
 
   let idx = 0;
-  let paused = false;
   modalCarouselTimer = window.setInterval(() => {
-    if (paused) return;
     idx = (idx + 1) % count;
     setActiveSlide(container, idx);
   }, 4500);
-
-  container.addEventListener("mouseenter", () => {
-    paused = true;
-  });
-  container.addEventListener("mouseleave", () => {
-    paused = false;
-  });
 
   container.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-modal-dot]");
@@ -594,17 +558,16 @@ function adoptionSection(dog) {
   const how = hasText(dog.howToApply) ? String(dog.howToApply).trim() : "";
 
   let html = `<div class="adoption-wrap">`;
-  html += `<h3 class="modal-section-title">Adoption process</h3>`;
-  html += `<p class="honesty-note">This page never invents adoption steps. Use <code>adoptionProcessSummary</code> for a short overview (for example text you wrote yourself or pasted from an AI tool after reviewing the real listing).</p>`;
+  html += `<h3 class="modal-section-title">Adoption</h3>`;
 
   if (summary) {
-    html += `<div class="modal-adoption-summary"><strong>Summary (from your file)</strong><p class="modal-body">${escapeHtml(summary)}</p></div>`;
+    html += `<div class="modal-adoption-summary"><p class="modal-lead">${escapeHtml(summary)}</p></div>`;
   } else {
-    html += `<p class="missing-block subtle">No short summary in the data file — add <code>adoptionProcessSummary</code> if you want this box filled.</p>`;
+    html += `<p class="missing-block subtle">No short summary in file (<code>adoptionProcessSummary</code>).</p>`;
   }
 
   if (raw) {
-    html += `<details class="expand-block"><summary>Full text copied from listing</summary><div class="modal-adoption">${escapeHtml(raw)}</div></details>`;
+    html += `<details class="expand-block"><summary>Full text from listing</summary><div class="modal-adoption">${escapeHtml(raw)}</div></details>`;
   } else {
     html += `<p class="missing-block">${MISSING}</p>`;
   }
@@ -623,14 +586,13 @@ function adoptionSection(dog) {
 function fitAnalysisSection(dog) {
   if (!hasText(dog.fitAnalysis)) {
     return `<div class="modal-block">
-      <h3 class="modal-section-title">Fit analysis (optional)</h3>
-      <p class="missing-block">${MISSING} Add <code>fitAnalysis</code> in the data file if you want notes here (for example from your own judgment or an AI tool you paste in — this site never auto-generates it).</p>
+      <h3 class="modal-section-title">Fit notes</h3>
+      <p class="missing-block">None in file. Add <code>fitAnalysis</code> if you want a short write-up here.</p>
     </div>`;
   }
   return `<div class="modal-block modal-fit">
-    <h3 class="modal-section-title">Fit analysis (from your file)</h3>
-    <p class="honesty-note">This text is only what you put in <code>fitAnalysis</code>. Not generated by this page.</p>
-    <p class="modal-body">${escapeHtml(String(dog.fitAnalysis).trim())}</p>
+    <h3 class="modal-section-title">Fit notes</h3>
+    <p class="modal-body modal-lead">${escapeHtml(String(dog.fitAnalysis).trim())}</p>
   </div>`;
 }
 
@@ -717,7 +679,7 @@ function openModal(dog) {
     ${longBlock("Extra notes & description", dog.details)}
     ${adoptionSection(dog)}
     ${sourceBlock}
-    <p class="modal-honesty">We only show what is in <code>dogs.json</code>. Empty fields are never filled in automatically.</p>
+    <p class="modal-honesty">Everything here comes from your data file.</p>
   `;
 
   const mc = els.modalInner.querySelector(`[data-modal-carousel="${modalId}"]`);
@@ -742,11 +704,6 @@ function toggleFavorite(id) {
   else favoriteSet.add(id);
   saveFavoriteSet();
   rebuildGrid();
-}
-
-function setCompareCheckbox(id, checked) {
-  const input = els.grid?.querySelector(`[data-compare-toggle="${CSS.escape(id)}"]`);
-  if (input) input.checked = checked;
 }
 
 function onCompareChange(e) {
@@ -942,6 +899,16 @@ async function init() {
 
     if (els.compatBanner) els.compatBanner.hidden = false;
     if (els.toolbar) els.toolbar.hidden = false;
+
+    const toolbarFilters = document.getElementById("toolbar-filters");
+    if (toolbarFilters) {
+      const mq = window.matchMedia("(min-width: 768px)");
+      const syncToolbarOpen = () => {
+        toolbarFilters.open = mq.matches;
+      };
+      syncToolbarOpen();
+      mq.addEventListener("change", syncToolbarOpen);
+    }
 
     const stored = (() => {
       try {

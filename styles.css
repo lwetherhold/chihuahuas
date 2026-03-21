@@ -63,11 +63,12 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: clamp(1.0625rem, 2.5vw, 1.125rem);
+  line-height: 1.55;
   color: var(--ink);
   background: var(--bg);
   background-image: radial-gradient(ellipse 120% 80% at 50% -20%, var(--accent-soft), transparent 50%);
+  -webkit-text-size-adjust: 100%;
 }
 
 .visually-hidden {
@@ -130,8 +131,9 @@ body {
 
 .sort-select {
   font: inherit;
-  font-size: 0.9rem;
-  padding: 0.4rem 0.65rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
+  min-height: 2.75rem;
+  padding: 0.45rem 0.75rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -143,13 +145,15 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.45rem 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 0.85rem;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--ink);
   cursor: pointer;
   font: inherit;
+  touch-action: manipulation;
 }
 
 .theme-toggle:hover,
@@ -211,9 +215,9 @@ body {
 
 .compat-intro {
   margin: 0 0 0.65rem;
-  font-size: 0.88rem;
+  font-size: clamp(0.95rem, 2.6vw, 1.02rem);
   color: var(--muted);
-  max-width: 70ch;
+  max-width: 42ch;
 }
 
 .compat-legend {
@@ -286,14 +290,20 @@ main.wrap {
   color: #b91c1c;
 }
 
-/* Dense grid: more cards per row */
+/* Cards: comfortable on phones — one column when narrow */
 .dog-grid {
   list-style: none;
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
-  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: 1rem;
+}
+
+@media (max-width: 520px) {
+  .dog-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .dog-card {
@@ -310,17 +320,17 @@ main.wrap {
 
 .dog-card__match-ring {
   position: absolute;
-  top: 0.4rem;
-  right: 0.4rem;
+  top: 0.45rem;
+  right: 0.45rem;
   z-index: 3;
-  min-width: 2.5rem;
-  height: 2.5rem;
+  min-width: 2.75rem;
+  height: 2.75rem;
   padding: 0 0.35rem;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.75rem;
+  font-size: clamp(0.8rem, 2.2vw, 0.88rem);
   font-weight: 700;
   color: var(--ink);
   background: var(--surface-2);
@@ -328,11 +338,18 @@ main.wrap {
   box-shadow: 0 2px 10px var(--accent-glow);
 }
 
-/* Photo carousel */
+/* Photo carousel — always advances; hover is subtle (desktop / fine pointer only) */
 .dog-card__carousel {
   position: relative;
   aspect-ratio: 4 / 3;
   background: var(--surface-2);
+  transition: box-shadow 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dog-card__carousel:hover {
+    box-shadow: inset 0 0 0 2px rgba(196, 181, 253, 0.4);
+  }
 }
 
 .carousel__track {
@@ -375,13 +392,24 @@ main.wrap {
 }
 
 .carousel__dot {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
+  min-width: 8px;
+  min-height: 8px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.35);
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+@media (min-width: 900px) {
+  .carousel__dot {
+    width: 6px;
+    height: 6px;
+    min-width: 6px;
+    min-height: 6px;
+  }
 }
 
 .carousel__dot.is-active {
@@ -399,112 +427,62 @@ main.wrap {
 }
 
 .dog-card__body {
-  padding: 0.65rem 0.7rem 0.75rem;
+  padding: 0.85rem 0.9rem 1rem;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: 0.5rem;
 }
 
 .dog-card__name {
   font-family: var(--font-display);
-  font-size: 0.98rem;
+  font-size: clamp(1.15rem, 3.8vw, 1.35rem);
   margin: 0;
   font-weight: 700;
   line-height: 1.2;
-  padding-right: 2.6rem;
+  padding-right: 2.75rem;
 }
 
-.dog-card__stats {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.25rem 0.65rem;
-  font-size: 0.78rem;
-}
-
-.stat {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 0.2rem;
-}
-
-.stat__label {
-  color: var(--muted);
-  font-size: 0.72rem;
-}
-
-.stat__value {
-  font-weight: 600;
-}
-
-.badge {
-  display: inline-block;
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 0.12rem 0.35rem;
-  border-radius: 4px;
-  background: var(--accent-soft);
-  color: var(--accent-bright);
-}
-
-[data-theme="light"] .badge {
-  color: var(--accent-2);
-}
-
-.badge--match {
-  background: rgba(52, 211, 153, 0.18);
-  color: #6ee7b7;
-}
-
-.badge--missing-weight {
-  background: rgba(251, 191, 36, 0.12);
-  color: #fcd34d;
-}
-
-.dog-card__summary {
+.dog-card__facts {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: clamp(0.95rem, 2.6vw, 1.02rem);
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.dog-card__peek {
+  margin: 0;
+  font-size: clamp(1rem, 2.8vw, 1.08rem);
   color: var(--ink);
-  line-height: 1.35;
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
 
-.dog-card__personality-label {
-  margin: 0;
-  font-size: 0.72rem;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.dog-card__personality {
-  margin: 0;
-  font-size: 0.78rem;
-  color: var(--muted);
-  line-height: 1.35;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.dog-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
 }
 
 .dog-card__btn {
-  margin-top: auto;
-  align-self: stretch;
+  flex: 1;
+  min-height: 2.75rem;
   font: inherit;
-  font-weight: 600;
-  font-size: 0.78rem;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.8vw, 1.08rem);
   cursor: pointer;
   border: none;
-  border-radius: 8px;
-  padding: 0.4rem 0.5rem;
+  border-radius: 10px;
+  padding: 0.55rem 0.75rem;
   background: linear-gradient(135deg, var(--accent-2), var(--accent));
   color: #fff;
+  touch-action: manipulation;
 }
 
 .dog-card__btn:hover,
@@ -519,19 +497,21 @@ main.wrap {
 
 .back-to-top {
   position: fixed;
-  bottom: 1.25rem;
-  right: 1.25rem;
+  bottom: max(1.25rem, env(safe-area-inset-bottom));
+  right: max(1rem, env(safe-area-inset-right));
   z-index: 40;
-  padding: 0.5rem 0.75rem;
+  min-height: 2.75rem;
+  padding: 0.5rem 0.9rem;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--ink);
   font: inherit;
-  font-size: 0.85rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
   font-weight: 600;
   cursor: pointer;
   box-shadow: var(--shadow);
+  touch-action: manipulation;
 }
 
 .back-to-top:focus-visible {
@@ -584,18 +564,21 @@ main.wrap {
 
 .modal-close {
   position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
+  top: max(0.5rem, env(safe-area-inset-top));
+  right: max(0.5rem, env(safe-area-inset-right));
   z-index: 4;
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   border: none;
   border-radius: 50%;
   background: var(--bg-elevated);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   line-height: 1;
   cursor: pointer;
   color: var(--ink);
+  touch-action: manipulation;
 }
 
 .modal-close:hover,
@@ -605,14 +588,16 @@ main.wrap {
 
 .modal-inner {
   overflow-y: auto;
-  padding: 1.25rem 1.1rem 1.1rem;
+  padding: 1.35rem 1.15rem max(1.15rem, env(safe-area-inset-bottom));
+  padding-top: max(1.35rem, env(safe-area-inset-top));
 }
 
 .modal-inner h2 {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: clamp(1.35rem, 4vw, 1.55rem);
   margin: 0 0 0.65rem;
-  padding-right: 2.25rem;
+  padding-right: 2.75rem;
+  line-height: 1.2;
 }
 
 .modal-score {
@@ -661,6 +646,13 @@ main.wrap {
   margin-bottom: 0.85rem;
   aspect-ratio: 4 / 3;
   background: var(--surface-2);
+  transition: box-shadow 0.2s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .modal-carousel:hover {
+    box-shadow: inset 0 0 0 2px rgba(196, 181, 253, 0.35);
+  }
 }
 
 .modal-carousel .carousel__slide {
@@ -733,7 +725,15 @@ main.wrap {
 .modal-body {
   white-space: pre-wrap;
   margin: 0 0 0.85rem;
-  font-size: 0.92rem;
+  font-size: clamp(0.98rem, 2.4vw, 1.05rem);
+  line-height: 1.55;
+}
+
+.modal-lead {
+  font-size: clamp(1.02rem, 2.5vw, 1.12rem);
+  line-height: 1.55;
+  margin: 0 0 0.65rem;
+  font-weight: 500;
 }
 
 .modal-source {
@@ -751,25 +751,79 @@ main.wrap {
   color: var(--accent-2);
 }
 
-/* Toolbar: search & filters */
+/* Toolbar: large search; filters tucked in details on small screens */
 .toolbar {
   padding: 0.75rem 0 0.25rem;
 }
 
+.toolbar-search {
+  margin-bottom: 0.75rem;
+}
+
+.toolbar-search label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+}
+
+.toolbar-input--search {
+  min-height: 3rem;
+  font-size: clamp(1rem, 2.8vw, 1.12rem);
+  padding: 0.65rem 0.85rem;
+}
+
+.toolbar-filters {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 0.65rem 0.5rem;
+  background: var(--surface-2);
+}
+
+.toolbar-filters__summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.8vw, 1.1rem);
+  padding: 0.65rem 0;
+  list-style: none;
+}
+
+.toolbar-filters__summary::-webkit-details-marker {
+  display: none;
+}
+
+.toolbar-filters__summary::after {
+  content: " ▾";
+  font-size: 0.85em;
+  color: var(--muted);
+}
+
+.toolbar-filters[open] .toolbar-filters__summary::after {
+  content: " ▴";
+}
+
+@media (min-width: 768px) {
+  .toolbar-filters {
+    border: none;
+    padding: 0;
+    background: transparent;
+  }
+
+  .toolbar-filters__summary {
+    display: none;
+  }
+}
+
 .toolbar-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-  gap: 0.65rem 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 0.75rem 1rem;
   align-items: end;
 }
 
-.toolbar-field--grow {
-  grid-column: span 2;
-  min-width: min(100%, 220px);
-}
-
-.toolbar-field label,
-.toolbar-field--grow label {
+.toolbar-field label {
   display: block;
   font-size: 0.72rem;
   text-transform: uppercase;
@@ -781,8 +835,9 @@ main.wrap {
 .toolbar-input {
   width: 100%;
   font: inherit;
-  font-size: 0.85rem;
-  padding: 0.4rem 0.5rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
+  min-height: 2.75rem;
+  padding: 0.45rem 0.55rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface);
@@ -792,15 +847,16 @@ main.wrap {
 .toolbar-field--checks {
   display: flex;
   align-items: flex-end;
-  padding-bottom: 0.2rem;
+  padding-bottom: 0.15rem;
 }
 
 .check-label {
-  font-size: 0.88rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.4rem;
+  min-height: 2.75rem;
 }
 
 .toolbar-actions {
@@ -811,19 +867,21 @@ main.wrap {
 
 .toolbar-hint {
   margin: 0.5rem 0 0;
-  font-size: 0.8rem;
+  font-size: clamp(0.9rem, 2.4vw, 0.98rem);
   color: var(--muted);
 }
 
 .btn-secondary {
   font: inherit;
-  font-size: 0.85rem;
-  padding: 0.35rem 0.75rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
+  min-height: 2.75rem;
+  padding: 0.4rem 0.85rem;
   border-radius: 8px;
   border: 1px solid var(--border);
   background: var(--surface-2);
   color: var(--ink);
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .btn-secondary:hover {
@@ -835,19 +893,22 @@ main.wrap {
   top: 0.35rem;
   left: 0.35rem;
   z-index: 4;
-  width: 2rem;
-  height: 2rem;
+  width: 2.75rem;
+  height: 2.75rem;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
   padding: 0;
   border: none;
   border-radius: 50%;
   background: rgba(20, 16, 26, 0.65);
   color: #fda4af;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  touch-action: manipulation;
 }
 
 [data-theme="light"] .dog-card__fav {
@@ -864,17 +925,22 @@ main.wrap {
 }
 
 .dog-card__compare {
-  font-size: 0.72rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
   color: var(--muted);
   display: flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.45rem;
   cursor: pointer;
   margin: 0;
+  flex-shrink: 0;
 }
 
 .dog-card__compare input {
   cursor: pointer;
+  width: 1.15rem;
+  height: 1.15rem;
+  min-width: 1.15rem;
+  min-height: 1.15rem;
 }
 
 /* Match score ring: tier colors */
@@ -1024,24 +1090,28 @@ main.wrap {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.5rem 1rem;
+  padding: 0.6rem 1rem max(0.6rem, env(safe-area-inset-bottom));
+  padding-left: max(1rem, env(safe-area-inset-left));
+  padding-right: max(1rem, env(safe-area-inset-right));
   background: var(--surface);
   border: 1px solid var(--border);
   border-bottom: none;
   border-radius: 12px 12px 0 0;
   box-shadow: var(--shadow);
-  font-size: 0.88rem;
+  font-size: clamp(0.95rem, 2.5vw, 1rem);
 }
 
 .btn-compare-open {
   font: inherit;
   font-weight: 600;
-  padding: 0.4rem 0.85rem;
+  min-height: 2.75rem;
+  padding: 0.45rem 1rem;
   border-radius: 8px;
   border: none;
   background: linear-gradient(135deg, var(--accent-2), var(--accent));
   color: #fff;
   cursor: pointer;
+  touch-action: manipulation;
 }
 
 .btn-compare-open:disabled {

@@ -1,8 +1,8 @@
 {
   "meta": {
     "title": "Chihuahuas for Grandma",
-    "subtitle": "Hand-picked adoptable dogs — cuddly lap companions around 5–6 lbs when possible.",
-    "targetWeightLbs": { "min": 5, "max": 6, "note": "Rough guide; confirm with the shelter or foster." }
+    "subtitle": "Dogs we picked out — tap one for the full story.",
+    "targetWeightLbs": { "min": 5, "max": 6, "note": "Goal is ~5–6 lbs; always confirm with the rescue." }
   },
   "dogs": [
     {
@@ -31,14 +31,14 @@
       "temperament": "Sweet, calm, loves laps",
       "cuddleScore": "high",
       "lapDogNote": "Foster says she seeks out laps and sleeps under the covers.",
-      "summary": "Gentle girl who wants to be held and nap beside you.",
+      "summary": "Calm little dog who likes to cuddle.",
       "myStory": "Bella came to us when her owner moved overseas. She has lived with other small dogs and ignores cats. This paragraph can be long — on the site it stays inside an expandable section until opened.",
       "health": "Spayed, microchipped, current on vaccines per listing (verify with rescue).",
-      "details": "Extra notes field for anything else you want to remember. Long text here also expands.",
+      "details": "Extra notes for anything you want to remember.",
       "adoptionProcess": "1) Submit application on our website. 2) Phone interview. 3) Meet-and-greet with whole household. 4) Contract and fee.",
-      "adoptionProcessSummary": "Apply online → call → meet the dog → sign and pay. (Short summary you write or paste — not from this website.)",
+      "adoptionProcessSummary": "You apply online first, then talk with someone on the phone, meet Bella with everyone who lives with you, and finish with the contract and fee if it is a good fit. Double-check dates and rules on the real listing before you drive anywhere.",
       "howToApply": "https://example.com/apply",
-      "fitAnalysis": "Good candidate for Grandma: calm wording, lap-focused, weight on target. (Your own notes — optional.)",
+      "fitAnalysis": "On paper she lines up well for a lap-focused home: weight is near your 5–6 lb goal, and both the personality blurb and foster note describe a calm dog who wants to be close to people. The usual caveats apply — confirm medical and behavior with the rescue, and meet her in person before deciding.",
       "sourceUrl": "https://example.com/listing",
       "addedOn": "2025-03-21"
     },
@@ -57,10 +57,12 @@
       "personality": "Spunky and playful — lots of energy, loves toys, wants to run and play fetch. Not a lap potato.",
       "temperament": "High energy, playful",
       "cuddleScore": "medium",
-      "summary": "Fun little guy — better for someone who wants an active buddy.",
-      "details": "Weight omitted on purpose to show the “not listed” message.",
+      "summary": "Fun and busy — better for an active home.",
+      "details": "Weight omitted on purpose to show the “not listed” message in details.",
       "adoptionFee": "$75",
       "howToApply": "In person at front desk during open hours.",
+      "adoptionProcessSummary": "Walk in during open hours, meet him at the kennel or play yard, fill out paperwork, and pay the fee the same day if the shelter approves. Hours and rules change — verify on their site.",
+      "fitAnalysis": "He is probably a weaker match if you want a quiet lap dog: the listing stresses energy, toys, and running around. He could still be a great pet for someone who enjoys daily play and training — just be honest about whether that fits Grandma’s day-to-day.",
       "compatibilityScore": 38,
       "sourceUrl": "https://example.com/sparky"
     }
