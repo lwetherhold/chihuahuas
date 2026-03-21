@@ -1,26 +1,25 @@
 # chihuahuas
 
-A small static site for Grandma: one place to see hand-picked adoptable chihuahuas, with **age, weight, and temperament** (including how cuddly they are) shown on the page so she does not have to jump between adoption sites.
+A static site (HTML, CSS, and JavaScript) for Grandma: one place to see hand-picked adoptable chihuahuas, with **age, weight, personality**, and a **match score** so you can compare options quickly. Details open in a panel so she does not have to jump between adoption sites.
 
-## How it works
+## Data (`data/dogs.json`)
 
-- **Data:** Edit [`data/dogs.json`](data/dogs.json). Each dog has a short card and a **Read full details** panel with the full text you paste in (from the listing or your notes).
-- **Photos:** Set `photoUrl` to a direct image URL from the listing, or leave it empty for a friendly placeholder.
-- **Weight:** `weightLbs` is shown prominently. Dogs near **5–6 lbs** get a small “near target weight” badge (configurable under `meta.targetWeightLbs`).
-- **Cuddliness:** Use `cuddleScore` (`high` | `medium` | `unknown`) and optional `lapDogNote` for “wants to be held / lap dog” notes.
-- **Original link:** Optional `sourceUrl` appears at the bottom of the detail panel if you want a link back to the listing.
+| Field | Notes |
+|--------|--------|
+| `photoUrl` / `photoUrls` | One URL or an array; multiple images **cycle automatically** on the card and in the detail panel. |
+| `weightLbs` | If omitted, the site shows **“Not listed”** and a prompt to ask the shelter. |
+| `personality` | Main blurb from the listing (spunky, calm, etc.). Falls back to `temperament` if empty. |
+| `cuddleScore` | `high` \| `medium` \| `unknown` — your read on lap/cuddle fit. |
+| `lapDogNote` | Extra notes about wanting to be held. |
+| `adoptionProcess` | Fees, meet-and-greet, home checks — paste from the listing if available. |
+| `compatibilityScore` | Optional **0–100** override; if omitted, the site **estimates** a score from weight, cuddly cues, and energetic wording. |
 
-## GitHub Actions → GitHub Pages
+## Theme & deploy
 
-On push to `main` (or `master`), [`.github/workflows/pages.yml`](.github/workflows/pages.yml) deploys the repo root to **GitHub Pages**.
+- **Dark mode** is the default, with **purple** accents; **light mode** uses **pastel purple** backgrounds. The choice is saved in the browser.
+- **GitHub Actions** deploys to **GitHub Pages** on push to `main` / `master` (see `.github/workflows/pages.yml`).
 
-1. Repo **Settings → Pages → Build and deployment → Source: GitHub Actions**.
-2. Push to `main`; the workflow publishes the site.
-3. Your site URL will look like `https://<user>.github.io/chihuahuas/` (project page).
-
-## Try it locally
-
-Opening `index.html` as a file may block loading `dogs.json`. From the repo folder:
+## Local preview
 
 ```bash
 npx --yes serve .

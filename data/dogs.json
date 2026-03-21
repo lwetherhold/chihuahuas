@@ -8,17 +8,37 @@
     {
       "id": "example-bella",
       "name": "Bella (example)",
-      "photoUrl": "",
+      "photoUrls": [
+        "https://picsum.photos/seed/chi-a/640/480",
+        "https://picsum.photos/seed/chi-b/640/480"
+      ],
       "age": "About 4 years",
       "weightLbs": 5.5,
       "sex": "Female",
+      "personality": "Sweet, calm, loves to follow you room to room. Enjoys quiet evenings and soft blankets.",
       "temperament": "Sweet, calm, loves laps",
       "cuddleScore": "high",
-      "lapDogNote": "Example: foster says she seeks out laps and sleeps under the covers.",
+      "lapDogNote": "Foster says she seeks out laps and sleeps under the covers.",
       "summary": "Gentle girl who wants to be held and nap beside you.",
-      "details": "Replace this card with a real dog. This placeholder shows how details appear here so Grandma can read everything in one place — age, weight, and whether they are truly cuddly — without hopping between adoption sites.\n\nWhen you add a real listing, paste in the description from the site (you can shorten it), and note anything the foster said about being held or sleeping on laps.",
+      "details": "Replace this card with a real dog. Paste the shelter’s description here so Grandma can read it in one place.\n\nThe match score blends weight, cuddly cues, and gentle penalties if the write-up sounds very high-energy.",
+      "adoptionProcess": "Example: $150 adoption fee; meet-and-greet required; home check within 20 miles. (Replace with text from the real listing.)",
       "sourceUrl": "https://example.com/listing",
       "addedOn": "2025-03-21"
+    },
+    {
+      "id": "example-sparky",
+      "name": "Sparky (example — spunky)",
+      "photoUrls": ["https://picsum.photos/seed/chi-c/640/480", "https://picsum.photos/seed/chi-d/640/480"],
+      "age": "2 years",
+      "sex": "Male",
+      "personality": "Spunky and playful — lots of energy, loves toys, wants to run and play fetch. Not a lap potato.",
+      "temperament": "High energy, playful",
+      "cuddleScore": "medium",
+      "summary": "Fun little guy — better for someone who wants an active buddy.",
+      "details": "This example shows how a more energetic personality still appears clearly, and the match score tends to be lower for lap-focused goals. Weight is missing on purpose to show the “not listed” message.",
+      "adoptionProcess": "",
+      "compatibilityScore": 38,
+      "sourceUrl": "https://example.com/sparky"
     }
   ]
 }

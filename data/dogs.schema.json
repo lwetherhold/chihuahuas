@@ -9,19 +9,23 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["id", "name", "age", "weightLbs", "temperament", "summary", "details"],
+        "required": ["id", "name", "age", "summary", "details"],
         "properties": {
           "id": { "type": "string" },
           "name": { "type": "string" },
           "photoUrl": { "type": "string" },
+          "photoUrls": { "type": "array", "items": { "type": "string" } },
           "age": { "type": "string" },
           "weightLbs": { "type": "number" },
           "sex": { "type": "string" },
+          "personality": { "type": "string" },
           "temperament": { "type": "string" },
           "cuddleScore": { "type": "string", "enum": ["high", "medium", "unknown"] },
           "summary": { "type": "string" },
           "details": { "type": "string" },
           "lapDogNote": { "type": "string" },
+          "adoptionProcess": { "type": "string" },
+          "compatibilityScore": { "type": "number", "minimum": 0, "maximum": 100 },
           "sourceUrl": { "type": "string" },
           "addedOn": { "type": "string" }
         }
