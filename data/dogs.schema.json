@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chihuahua listings",
+  "type": "object",
+  "required": ["dogs"],
+  "properties": {
+    "meta": { "type": "object" },
+    "dogs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "age", "weightLbs", "temperament", "summary", "details"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string" },
+          "photoUrl": { "type": "string" },
+          "age": { "type": "string" },
+          "weightLbs": { "type": "number" },
+          "sex": { "type": "string" },
+          "temperament": { "type": "string" },
+          "cuddleScore": { "type": "string", "enum": ["high", "medium", "unknown"] },
+          "summary": { "type": "string" },
+          "details": { "type": "string" },
+          "lapDogNote": { "type": "string" },
+          "sourceUrl": { "type": "string" },
+          "addedOn": { "type": "string" }
+        }
+      }
+    }
+  }
+}

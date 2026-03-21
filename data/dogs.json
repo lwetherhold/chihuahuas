@@ -1,0 +1,24 @@
+{
+  "meta": {
+    "title": "Chihuahuas for Grandma",
+    "subtitle": "Hand-picked adoptable dogs — cuddly lap companions around 5–6 lbs when possible.",
+    "targetWeightLbs": { "min": 5, "max": 6, "note": "Rough guide; confirm with the shelter or foster." }
+  },
+  "dogs": [
+    {
+      "id": "example-bella",
+      "name": "Bella (example)",
+      "photoUrl": "",
+      "age": "About 4 years",
+      "weightLbs": 5.5,
+      "sex": "Female",
+      "temperament": "Sweet, calm, loves laps",
+      "cuddleScore": "high",
+      "lapDogNote": "Example: foster says she seeks out laps and sleeps under the covers.",
+      "summary": "Gentle girl who wants to be held and nap beside you.",
+      "details": "Replace this card with a real dog. This placeholder shows how details appear here so Grandma can read everything in one place — age, weight, and whether they are truly cuddly — without hopping between adoption sites.\n\nWhen you add a real listing, paste in the description from the site (you can shorten it), and note anything the foster said about being held or sleeping on laps.",
+      "sourceUrl": "https://example.com/listing",
+      "addedOn": "2025-03-21"
+    }
+  ]
+}

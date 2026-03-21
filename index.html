@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Hand-picked adoptable chihuahuas — details in one place." />
+    <title>Chihuahuas for Grandma</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;700&family=Source+Sans+3:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to dogs</a>
+
+    <header class="site-header">
+      <div class="wrap">
+        <h1 class="site-title" id="page-title">Chihuahuas for Grandma</h1>
+        <p class="site-subtitle" id="page-subtitle" hidden></p>
+        <p class="weight-note" id="weight-note" hidden></p>
+      </div>
+    </header>
+
+    <main id="main" class="wrap">
+      <p class="load-msg" id="load-msg" role="status">Loading dogs…</p>
+      <p class="err-msg" id="err-msg" hidden></p>
+
+      <ul class="dog-grid" id="dog-grid" aria-live="polite"></ul>
+    </main>
+
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>Made with love. Weight and personality can change — always confirm with the shelter or foster.</p>
+      </div>
+    </footer>
+
+    <div
+      class="modal"
+      id="dog-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      hidden
+    >
+      <div class="modal-backdrop" data-close-modal tabindex="-1"></div>
+      <div class="modal-panel">
+        <button type="button" class="modal-close" id="modal-close" aria-label="Close details">&times;</button>
+        <div class="modal-inner" id="modal-inner"></div>
+      </div>
+    </div>
+
+    <script src="app.js" type="module"></script>
+  </body>
+</html>
