@@ -36,7 +36,12 @@
           <label class="sort-label" for="sort-select">Sort</label>
           <select id="sort-select" class="sort-select" aria-label="Sort dogs">
             <option value="compatibility-desc">Best match first</option>
+            <option value="favorites-first">Favorites first (then best match)</option>
             <option value="name-asc">Name (A–Z)</option>
+            <option value="age-asc">Age (youngest)</option>
+            <option value="age-desc">Age (oldest)</option>
+            <option value="distance-asc">Distance (nearest)</option>
+            <option value="distance-desc">Distance (farthest)</option>
             <option value="weight-asc">Weight (lightest)</option>
             <option value="weight-desc">Weight (heaviest)</option>
           </select>
@@ -63,6 +68,49 @@
       </ul>
     </section>
 
+    <section class="toolbar wrap" id="toolbar" hidden>
+      <div class="toolbar-grid">
+        <div class="toolbar-field toolbar-field--grow">
+          <label for="search-input">Search</label>
+          <input type="search" id="search-input" class="toolbar-input" placeholder="Name, breed, location, ID…" autocomplete="off" />
+        </div>
+        <div class="toolbar-field">
+          <label for="filter-min-tier">Minimum match tier</label>
+          <select id="filter-min-tier" class="toolbar-input">
+            <option value="any">Any</option>
+            <option value="gte40">Okay or better (40+)</option>
+            <option value="gte55">Good or better (55+)</option>
+            <option value="gte70">Strong or better (70+)</option>
+            <option value="gte85">Excellent only (85+)</option>
+          </select>
+        </div>
+        <div class="toolbar-field">
+          <label for="filter-care">Where they live</label>
+          <select id="filter-care" class="toolbar-input">
+            <option value="any">Any</option>
+            <option value="shelter">Shelter / on-site</option>
+            <option value="foster">Foster home</option>
+            <option value="unknown">Not specified</option>
+          </select>
+        </div>
+        <div class="toolbar-field">
+          <label for="filter-max-dist">Max distance (mi)</label>
+          <input type="number" id="filter-max-dist" class="toolbar-input" placeholder="Any" min="0" step="0.1" />
+        </div>
+        <div class="toolbar-field">
+          <label for="filter-breed">Breed contains</label>
+          <input type="text" id="filter-breed" class="toolbar-input" placeholder="Any" />
+        </div>
+        <div class="toolbar-field toolbar-field--checks">
+          <label class="check-label"><input type="checkbox" id="filter-favorites-only" /> Favorites only</label>
+        </div>
+        <div class="toolbar-actions">
+          <button type="button" class="btn-secondary" id="filter-clear">Clear filters</button>
+        </div>
+      </div>
+      <p class="toolbar-hint" id="filter-count" aria-live="polite"></p>
+    </section>
+
     <main id="main" class="wrap">
       <p class="load-msg" id="load-msg" role="status">Loading dogs…</p>
       <p class="err-msg" id="err-msg" hidden></p>
@@ -72,9 +120,15 @@
       <button type="button" class="back-to-top" id="back-to-top" hidden aria-label="Back to top">↑ Top</button>
     </main>
 
+    <div class="compare-dock" id="compare-dock" hidden>
+      <span id="compare-dock-label">Compare</span>
+      <button type="button" class="btn-compare-open" id="compare-open" disabled>Open compare</button>
+      <button type="button" class="btn-link" id="compare-clear">Clear</button>
+    </div>
+
     <footer class="site-footer">
       <div class="wrap">
-        <p>Made with love. Weight and personality can change — always confirm with the shelter or foster.</p>
+        <p>Made with love. This site only shows what you put in the data file — it never invents facts about a dog.</p>
       </div>
     </footer>
 
@@ -90,6 +144,25 @@
       <div class="modal-panel">
         <button type="button" class="modal-close" id="modal-close" aria-label="Close details">&times;</button>
         <div class="modal-inner" id="modal-inner"></div>
+      </div>
+    </div>
+
+    <div
+      class="modal modal--wide"
+      id="compare-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="compare-modal-title"
+      hidden
+    >
+      <div class="modal-backdrop" data-close-compare tabindex="-1"></div>
+      <div class="modal-panel">
+        <button type="button" class="modal-close" id="compare-modal-close" aria-label="Close compare">&times;</button>
+        <div class="modal-inner" id="compare-modal-inner">
+          <h2 id="compare-modal-title">Compare dogs</h2>
+          <p class="compare-intro">Pick up to three dogs using the checkboxes on the cards. Information is only what you added in <code>dogs.json</code>.</p>
+          <div id="compare-table-wrap"></div>
+        </div>
       </div>
     </div>
 
