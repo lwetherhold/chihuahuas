@@ -46,6 +46,11 @@ const els = {
   filterCare: document.getElementById("filter-care"),
   filterMaxDist: document.getElementById("filter-max-dist"),
   filterBreed: document.getElementById("filter-breed"),
+  filterMinWeight: document.getElementById("filter-min-weight"),
+  filterMaxWeight: document.getElementById("filter-max-weight"),
+  filterMinAgeYrs: document.getElementById("filter-min-age-yrs"),
+  filterMaxAgeYrs: document.getElementById("filter-max-age-yrs"),
+  filterCuddlyOnly: document.getElementById("filter-cuddly-only"),
   filterFavoritesOnly: document.getElementById("filter-favorites-only"),
   filterClear: document.getElementById("filter-clear"),
   filterCount: document.getElementById("filter-count"),
@@ -320,6 +325,28 @@ function passesFilters(dog) {
     const b = (dog.breed && String(dog.breed).toLowerCase()) || "";
     if (!b.includes(breedQ)) return false;
   }
+
+  const minW = parseFloat(els.filterMinWeight?.value || "");
+  const maxW = parseFloat(els.filterMaxWeight?.value || "");
+  const hasWeightFilter = (!Number.isNaN(minW) && minW > 0) || (!Number.isNaN(maxW) && maxW > 0);
+  if (hasWeightFilter) {
+    if (typeof dog.weightLbs !== "number" || Number.isNaN(dog.weightLbs)) return false;
+    if (!Number.isNaN(minW) && minW > 0 && dog.weightLbs < minW) return false;
+    if (!Number.isNaN(maxW) && maxW > 0 && dog.weightLbs > maxW) return false;
+  }
+
+  const minAgeYrs = parseFloat(els.filterMinAgeYrs?.value || "");
+  const maxAgeYrs = parseFloat(els.filterMaxAgeYrs?.value || "");
+  const hasAgeFilter =
+    (!Number.isNaN(minAgeYrs) && minAgeYrs > 0) || (!Number.isNaN(maxAgeYrs) && maxAgeYrs > 0);
+  if (hasAgeFilter) {
+    const months = getAgeSortMonths(dog);
+    if (months >= 99999) return false;
+    if (!Number.isNaN(minAgeYrs) && minAgeYrs > 0 && months < minAgeYrs * 12) return false;
+    if (!Number.isNaN(maxAgeYrs) && maxAgeYrs > 0 && months > maxAgeYrs * 12) return false;
+  }
+
+  if (els.filterCuddlyOnly?.checked && dog.cuddleScore !== "high") return false;
 
   if (els.filterFavoritesOnly?.checked && !favoriteSet.has(dog.id)) return false;
 
@@ -848,6 +875,11 @@ function clearFilters() {
   if (els.filterCare) els.filterCare.value = "any";
   if (els.filterMaxDist) els.filterMaxDist.value = "";
   if (els.filterBreed) els.filterBreed.value = "";
+  if (els.filterMinWeight) els.filterMinWeight.value = "";
+  if (els.filterMaxWeight) els.filterMaxWeight.value = "";
+  if (els.filterMinAgeYrs) els.filterMinAgeYrs.value = "";
+  if (els.filterMaxAgeYrs) els.filterMaxAgeYrs.value = "";
+  if (els.filterCuddlyOnly) els.filterCuddlyOnly.checked = false;
   if (els.filterFavoritesOnly) els.filterFavoritesOnly.checked = false;
   rebuildGrid();
 }
@@ -945,6 +977,11 @@ async function init() {
     els.filterCare?.addEventListener("change", rebuildGrid);
     els.filterMaxDist?.addEventListener("input", debouncedRebuild);
     els.filterBreed?.addEventListener("input", debouncedRebuild);
+    els.filterMinWeight?.addEventListener("input", debouncedRebuild);
+    els.filterMaxWeight?.addEventListener("input", debouncedRebuild);
+    els.filterMinAgeYrs?.addEventListener("input", debouncedRebuild);
+    els.filterMaxAgeYrs?.addEventListener("input", debouncedRebuild);
+    els.filterCuddlyOnly?.addEventListener("change", rebuildGrid);
     els.filterFavoritesOnly?.addEventListener("change", rebuildGrid);
     els.filterClear?.addEventListener("click", clearFilters);
 

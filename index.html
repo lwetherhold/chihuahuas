@@ -110,6 +110,25 @@
             <label for="filter-breed">Breed</label>
             <input type="text" id="filter-breed" class="toolbar-input" placeholder="Any" autocapitalize="words" />
           </div>
+          <div class="toolbar-field">
+            <label for="filter-min-weight">Min lbs</label>
+            <input type="number" id="filter-min-weight" class="toolbar-input" placeholder="—" min="0" step="0.1" inputmode="decimal" />
+          </div>
+          <div class="toolbar-field">
+            <label for="filter-max-weight">Max lbs</label>
+            <input type="number" id="filter-max-weight" class="toolbar-input" placeholder="—" min="0" step="0.1" inputmode="decimal" />
+          </div>
+          <div class="toolbar-field">
+            <label for="filter-min-age-yrs">Min age (yrs)</label>
+            <input type="number" id="filter-min-age-yrs" class="toolbar-input" placeholder="—" min="0" step="0.5" inputmode="decimal" />
+          </div>
+          <div class="toolbar-field">
+            <label for="filter-max-age-yrs">Max age (yrs)</label>
+            <input type="number" id="filter-max-age-yrs" class="toolbar-input" placeholder="—" min="0" step="0.5" inputmode="decimal" />
+          </div>
+          <div class="toolbar-field toolbar-field--checks">
+            <label class="check-label"><input type="checkbox" id="filter-cuddly-only" /> Very cuddly only</label>
+          </div>
           <div class="toolbar-field toolbar-field--checks">
             <label class="check-label"><input type="checkbox" id="filter-favorites-only" /> Saved only</label>
           </div>

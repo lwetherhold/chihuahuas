@@ -57,6 +57,10 @@ html {
   .carousel__slide {
     transition: none !important;
   }
+  .dog-card__match-ring {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 body {
@@ -318,6 +322,7 @@ main.wrap {
   position: relative;
 }
 
+/* Score badge: dark disk + tier tint so numbers stay readable on any photo */
 .dog-card__match-ring {
   position: absolute;
   top: 0.45rem;
@@ -331,11 +336,21 @@ main.wrap {
   align-items: center;
   justify-content: center;
   font-size: clamp(0.8rem, 2.2vw, 0.88rem);
-  font-weight: 700;
-  color: var(--ink);
-  background: var(--surface-2);
-  border: 2px solid var(--accent);
-  box-shadow: 0 2px 10px var(--accent-glow);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #f8fafc;
+  border-style: solid;
+  border-width: 2px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85), 0 0 12px rgba(0, 0, 0, 0.45);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  /* Fallback before tier class */
+  background: radial-gradient(circle at 35% 30%, rgba(120, 120, 140, 0.35), rgba(12, 10, 20, 0.92) 62%);
+  border-color: rgba(167, 139, 250, 0.85);
 }
 
 /* Photo carousel — always advances; hover is subtle (desktop / fine pointer only) */
@@ -943,35 +958,55 @@ main.wrap {
   min-height: 1.15rem;
 }
 
-/* Match score ring: tier colors */
+/* Tier tints: faint colored glow inside the dark circle */
 .dog-card__match-ring.tier-excellent {
   border-color: #34d399;
-  color: #6ee7b7;
-  background: rgba(52, 211, 153, 0.15);
+  color: #d1fae5;
+  background: radial-gradient(circle at 35% 28%, rgba(52, 211, 153, 0.45), rgba(10, 18, 16, 0.94) 58%);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 -8px 24px rgba(52, 211, 153, 0.12);
 }
 
 .dog-card__match-ring.tier-strong {
   border-color: #818cf8;
-  color: #c4b5fd;
-  background: rgba(129, 140, 248, 0.18);
+  color: #e0e7ff;
+  background: radial-gradient(circle at 35% 28%, rgba(129, 140, 248, 0.42), rgba(14, 12, 28, 0.94) 58%);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -8px 24px rgba(129, 140, 248, 0.14);
 }
 
 .dog-card__match-ring.tier-good {
   border-color: #a78bfa;
-  color: #d8b4fe;
-  background: rgba(167, 139, 250, 0.15);
+  color: #ede9fe;
+  background: radial-gradient(circle at 35% 28%, rgba(167, 139, 250, 0.4), rgba(16, 12, 26, 0.94) 58%);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -8px 24px rgba(167, 139, 250, 0.12);
 }
 
 .dog-card__match-ring.tier-okay {
   border-color: #fbbf24;
-  color: #fcd34d;
-  background: rgba(251, 191, 36, 0.12);
+  color: #fef3c7;
+  background: radial-gradient(circle at 35% 28%, rgba(251, 191, 36, 0.38), rgba(22, 16, 8, 0.94) 58%);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -8px 24px rgba(251, 191, 36, 0.1);
 }
 
 .dog-card__match-ring.tier-low {
   border-color: #f87171;
-  color: #fca5a5;
-  background: rgba(248, 113, 113, 0.12);
+  color: #fee2e2;
+  background: radial-gradient(circle at 35% 28%, rgba(248, 113, 113, 0.4), rgba(26, 10, 10, 0.94) 58%);
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 -8px 24px rgba(248, 113, 113, 0.12);
 }
 
 /* Modal score bar + label: same tier hues */

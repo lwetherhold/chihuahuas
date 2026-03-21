@@ -6,7 +6,7 @@ Static **HTML + CSS + JavaScript** site: search, filters, sort, saved dogs (in t
 
 - **Search** scans name, breed, location, caretaker, pet ID, personality, summary, and details.
 - On phones, extra options sit under **Filters** so the first screen stays simple. On wider screens, filters stay open.
-- **Filters:** minimum match tier, where the dog stays (shelter vs foster), max distance (miles), breed substring, **saved only**.
+- **Filters:** match tier, shelter vs foster, max distance (miles), breed, **min/max weight (lbs)**, **min/max age (years)** (uses `ageSortMonths` or a simple parse of `age`; dogs with unknown age are hidden when any age filter is set), **very cuddly only** (`cuddleScore` = `high`), **saved only**.
 - **Sort:** match score, saved-first, name, age (`ageSortMonths` or a simple parse of `age`), distance, weight.
 - **Saved** (♥) and **compare** use `localStorage`. Saved dogs are **pinned to the top** (except when sort is **Saved first**).
 
