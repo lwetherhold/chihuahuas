@@ -10,7 +10,12 @@
       "name": "Tiki",
       "petId": "ps_2607397-2401853",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1283952112",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1283952123",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1283952135",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1283952147"
+      ],
       "age": "6 months old (puppy)",
       "ageSortMonths": 6,
       "sex": "Female",
@@ -40,7 +45,12 @@
       "name": "Paco",
       "petId": "ps_2604360-2401853",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168808",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168817",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168823",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168829"
+      ],
       "age": "5 months old (puppy)",
       "ageSortMonths": 5,
       "sex": "Male",
