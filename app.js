@@ -430,7 +430,7 @@ function cardWeightCell(dog, meta) {
       target && dog.weightLbs >= target.min && dog.weightLbs <= target.max
         ? ` <span class="badge badge--match">${target.min}–${target.max} lbs</span>`
         : "";
-    return `${dog.weightLbs} lbs${match}`;
+    return `<span class="dog-card__weight-value">${dog.weightLbs} lbs</span>${match}`;
   }
   return "—";
 }
