@@ -2,6 +2,7 @@ const DATA_URL = new URL("data/dogs.json", import.meta.url);
 
 const LS_FAV = "chihuahuas-favorites";
 const LS_COMPARE = "chihuahuas-compare";
+const LS_SCAM = "chihuahuas-scam";
 const MAX_COMPARE = 3;
 
 const MISSING = "Not provided on the listing.";
@@ -37,6 +38,8 @@ const els = {
   modalClose: document.getElementById("modal-close"),
   themeToggle: document.getElementById("theme-toggle"),
   themeToggleLabel: document.getElementById("theme-toggle-label"),
+  scamToggle: document.getElementById("scam-toggle"),
+  scamToggleLabel: document.getElementById("scam-toggle-label"),
   sortSelect: document.getElementById("sort-select"),
   compatBanner: document.getElementById("compat-banner"),
   backToTop: document.getElementById("back-to-top"),
@@ -72,6 +75,23 @@ function escapeHtml(s) {
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+/** Turn plain text into safe HTML, linking https? URLs (for modal long text). */
+function linkifyPlainText(text) {
+  const raw = String(text);
+  const urlRe = /https?:\/\/[^\s<>"{}|\\^`[\]]+/gi;
+  let out = "";
+  let last = 0;
+  let m;
+  while ((m = urlRe.exec(raw)) !== null) {
+    out += escapeHtml(raw.slice(last, m.index));
+    const url = m[0];
+    out += `<a class="modal-inline-link" href="${escapeHtml(url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(url)}</a>`;
+    last = m.index + url.length;
+  }
+  out += escapeHtml(raw.slice(last));
+  return out;
 }
 
 function hasText(v) {
@@ -428,7 +448,7 @@ function cardWeightCell(dog, meta) {
   if (typeof dog.weightLbs === "number" && !Number.isNaN(dog.weightLbs)) {
     const match =
       target && dog.weightLbs >= target.min && dog.weightLbs <= target.max
-        ? ` <span class="badge badge--match">${target.min}–${target.max} lbs</span>`
+        ? ` <span class="badge badge--match" title="Within your goal weight range">${target.min}–${target.max} lbs</span>`
         : "";
     return `<span class="dog-card__weight-value">${dog.weightLbs} lbs</span>${match}`;
   }
@@ -495,11 +515,17 @@ function renderCarouselMarkup(urls, dogId, dotsClass = "carousel__dots") {
     </div>`;
 }
 
-function setActiveSlide(container, index) {
+function setActiveSlide(container, index, instant = false) {
+  if (instant) container.classList.add("carousel--instant");
   const slides = container.querySelectorAll(".carousel__slide");
   const dots = container.querySelectorAll(".carousel__dot");
   slides.forEach((s, i) => s.classList.toggle("is-active", i === index));
   dots.forEach((d, i) => d.classList.toggle("is-active", i === index));
+  if (instant) {
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => container.classList.remove("carousel--instant"));
+    });
+  }
 }
 
 function wireCarousel(container, dogId) {
@@ -508,17 +534,26 @@ function wireCarousel(container, dogId) {
   if (count <= 1) return;
 
   let idx = 0;
+  let timer = null;
 
   const tick = () => {
     idx = (idx + 1) % count;
-    setActiveSlide(container, idx);
+    setActiveSlide(container, idx, false);
   };
 
-  let timer = null;
-  if (!reduce) {
+  const restartTimer = () => {
+    if (reduce) return;
+    if (timer != null) {
+      clearInterval(timer);
+      const ti = carouselTimers.indexOf(timer);
+      if (ti !== -1) carouselTimers.splice(ti, 1);
+      timer = null;
+    }
     timer = window.setInterval(tick, 4200);
     carouselTimers.push(timer);
-  }
+  };
+
+  restartTimer();
 
   container.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-carousel-dot]");
@@ -526,8 +561,30 @@ function wireCarousel(container, dogId) {
     const si = parseInt(btn.getAttribute("data-slide") || "0", 10);
     if (!Number.isNaN(si)) {
       idx = si;
-      setActiveSlide(container, idx);
+      setActiveSlide(container, idx, true);
+      restartTimer();
     }
+  });
+
+  let pointerDownX = null;
+  container.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (e.target.closest("[data-carousel-dot]")) return;
+    pointerDownX = e.clientX;
+  });
+  container.addEventListener("pointerup", (e) => {
+    if (pointerDownX == null) return;
+    const dx = e.clientX - pointerDownX;
+    pointerDownX = null;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (Math.abs(dx) < 56) return;
+    if (dx > 0) idx = (idx - 1 + count) % count;
+    else idx = (idx + 1) % count;
+    setActiveSlide(container, idx, true);
+    restartTimer();
+  });
+  container.addEventListener("pointercancel", () => {
+    pointerDownX = null;
   });
 }
 
@@ -594,13 +651,23 @@ function wireModalCarousel(container, modalId) {
   }
   const count = parseInt(container.getAttribute("data-slide-count") || "0", 10);
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (count <= 1 || reduce) return;
-
   let idx = 0;
-  modalCarouselTimer = window.setInterval(() => {
+
+  const tick = () => {
     idx = (idx + 1) % count;
-    setActiveSlide(container, idx);
-  }, 4500);
+    setActiveSlide(container, idx, false);
+  };
+
+  const restartTimer = () => {
+    if (modalCarouselTimer) {
+      clearInterval(modalCarouselTimer);
+      modalCarouselTimer = null;
+    }
+    if (count <= 1 || reduce) return;
+    modalCarouselTimer = window.setInterval(tick, 4500);
+  };
+
+  restartTimer();
 
   container.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-modal-dot]");
@@ -608,8 +675,30 @@ function wireModalCarousel(container, modalId) {
     const si = parseInt(btn.getAttribute("data-slide") || "0", 10);
     if (!Number.isNaN(si)) {
       idx = si;
-      setActiveSlide(container, idx);
+      setActiveSlide(container, idx, true);
+      restartTimer();
     }
+  });
+
+  let pointerDownX = null;
+  container.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    if (e.target.closest("[data-modal-dot]")) return;
+    pointerDownX = e.clientX;
+  });
+  container.addEventListener("pointerup", (e) => {
+    if (pointerDownX == null) return;
+    const dx = e.clientX - pointerDownX;
+    pointerDownX = null;
+    if (count <= 1) return;
+    if (Math.abs(dx) < 56) return;
+    if (dx > 0) idx = (idx - 1 + count) % count;
+    else idx = (idx + 1) % count;
+    setActiveSlide(container, idx, true);
+    restartTimer();
+  });
+  container.addEventListener("pointercancel", () => {
+    pointerDownX = null;
   });
 }
 
@@ -635,14 +724,14 @@ function adoptionSection(dog) {
   }
 
   if (raw) {
-    html += `<details class="expand-block"><summary>Full text from listing</summary><div class="modal-adoption">${escapeHtml(raw)}</div></details>`;
+    html += `<details class="expand-block"><summary>Full text from listing</summary><div class="modal-adoption">${linkifyPlainText(raw)}</div></details>`;
   } else {
     html += `<p class="missing-block">${MISSING}</p>`;
   }
 
   html += `<h3 class="modal-section-title">How to apply</h3>`;
   if (how) {
-    html += `<p class="modal-body">${escapeHtml(how)}</p>`;
+    html += `<p class="modal-body">${linkifyPlainText(how)}</p>`;
   } else {
     html += `<p class="missing-block">${MISSING}</p>`;
   }
@@ -683,9 +772,9 @@ function openModal(dog) {
   const photoBlock = renderModalCarousel(urls, modalId);
 
   const sourceBlock = dog.sourceUrl
-    ? `<p class="modal-source">Original listing: <a href="${escapeHtml(dog.sourceUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(
+    ? `<p class="modal-source"><a class="modal-source-link" href="${escapeHtml(dog.sourceUrl)}" target="_blank" rel="noopener noreferrer">View this dog on Adopt a Pet</a><span class="modal-source-url">${escapeHtml(
         dog.sourceUrl
-      )}</a></p>`
+      )}</span></p>`
     : `<p class="modal-source missing-field">${MISSING}</p>`;
 
   const lapNote = dog.lapDogNote
@@ -940,6 +1029,19 @@ function toggleTheme() {
   applyTheme(cur === "dark" ? "light" : "dark");
 }
 
+function applyScamMode(on) {
+  document.documentElement.classList.toggle("scam-site", on);
+  try {
+    localStorage.setItem(LS_SCAM, on ? "1" : "0");
+  } catch (e) {}
+  if (els.scamToggle) els.scamToggle.setAttribute("aria-pressed", on ? "true" : "false");
+  if (els.scamToggleLabel) els.scamToggleLabel.textContent = on ? "“Trust me” mode on" : "“Trust me” mode off";
+}
+
+function toggleScamMode() {
+  applyScamMode(!document.documentElement.classList.contains("scam-site"));
+}
+
 async function init() {
   try {
     const res = await fetch(DATA_URL);
@@ -996,6 +1098,12 @@ async function init() {
       applyTheme("dark");
     }
 
+    let scamOn = false;
+    try {
+      scamOn = localStorage.getItem(LS_SCAM) === "1";
+    } catch (e) {}
+    applyScamMode(scamOn);
+
     els.loadMsg.hidden = true;
     rebuildGrid();
     updateCompareDock();
@@ -1027,6 +1135,7 @@ async function init() {
     els.filterClear?.addEventListener("click", clearFilters);
 
     els.themeToggle?.addEventListener("click", toggleTheme);
+    els.scamToggle?.addEventListener("click", toggleScamMode);
 
     const onScroll = () => {
       if (!els.backToTop) return;

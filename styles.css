@@ -178,6 +178,58 @@ body {
   display: inline;
 }
 
+.scam-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+  min-width: 2.75rem;
+  padding: 0.45rem 0.65rem;
+  border-radius: 10px;
+  border: 2px dashed #facc15;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(250, 204, 21, 0.12),
+    rgba(250, 204, 21, 0.12) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1.15rem;
+  line-height: 1;
+  touch-action: manipulation;
+}
+
+.scam-toggle:hover,
+.scam-toggle:focus-visible {
+  border-color: #fde047;
+  box-shadow: 0 0 0 3px rgba(250, 204, 21, 0.35);
+  outline: none;
+}
+
+.scam-toggle[aria-pressed="true"] {
+  border-style: solid;
+  animation: scam-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes scam-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 12px 2px rgba(250, 204, 21, 0.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scam-toggle[aria-pressed="true"] {
+    animation: none;
+  }
+}
+
 .site-header {
   padding: 1.25rem 0 1rem;
   border-bottom: 1px solid var(--border);
@@ -359,6 +411,12 @@ main.wrap {
   aspect-ratio: 4 / 3;
   background: var(--surface-2);
   transition: box-shadow 0.2s ease;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.dog-card__carousel:active {
+  cursor: grabbing;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -394,6 +452,10 @@ main.wrap {
 .carousel__slide.is-active {
   opacity: 1;
   z-index: 1;
+}
+
+.carousel--instant .carousel__slide {
+  transition: none;
 }
 
 .carousel__dots {
@@ -517,25 +579,66 @@ main.wrap {
 .dog-card__tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.35rem;
+  gap: 0.4rem;
   align-items: center;
   margin-top: 0.1rem;
 }
 
+/* Pill tags on cards (cuddliness + weight-range match) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  border-radius: 999px;
+  font-size: clamp(0.72rem, 2vw, 0.8rem);
+  font-weight: 700;
+  line-height: 1.2;
+  padding: 0.28rem 0.55rem;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.06);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
 .badge--cuddle {
   text-transform: none;
-  letter-spacing: 0;
+  letter-spacing: 0.01em;
   font-size: clamp(0.78rem, 2vw, 0.85rem);
-  padding: 0.2rem 0.45rem;
+  font-weight: 600;
+  padding: 0.32rem 0.6rem;
+  background: linear-gradient(135deg, rgba(244, 114, 182, 0.22), rgba(167, 139, 250, 0.2));
+  color: var(--ink);
+  border-color: rgba(244, 114, 182, 0.45);
+}
+
+.badge--match {
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: clamp(0.68rem, 1.85vw, 0.76rem);
+  font-weight: 800;
+  padding: 0.3rem 0.5rem;
+  background: linear-gradient(135deg, rgba(52, 211, 153, 0.35), rgba(45, 212, 191, 0.22));
+  color: #ecfdf5;
+  border-color: rgba(52, 211, 153, 0.55);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="light"] .badge--match {
+  color: #064e3b;
+  text-shadow: none;
+  border-color: rgba(5, 150, 105, 0.45);
 }
 
 .badge--muted {
   text-transform: none;
-  letter-spacing: 0;
-  font-weight: 500;
+  letter-spacing: 0.01em;
+  font-weight: 600;
   background: var(--surface-2);
   color: var(--muted);
-  font-size: clamp(0.78rem, 2vw, 0.85rem);
+  font-size: clamp(0.76rem, 2vw, 0.82rem);
+  padding: 0.3rem 0.55rem;
+  border-style: dashed;
+  opacity: 0.95;
 }
 
 .dog-card__peek {
@@ -734,6 +837,12 @@ main.wrap {
   aspect-ratio: 4 / 3;
   background: var(--surface-2);
   transition: box-shadow 0.2s ease;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.modal-carousel:active {
+  cursor: grabbing;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -835,6 +944,45 @@ main.wrap {
 }
 
 [data-theme="light"] .modal-source a {
+  color: var(--accent-2);
+}
+
+.modal-source-link {
+  display: inline-block;
+  font-weight: 700;
+  font-size: clamp(1rem, 2.5vw, 1.08rem);
+  padding: 0.45rem 0.75rem;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent-2), var(--accent));
+  color: #fff !important;
+  text-decoration: none;
+  margin-bottom: 0.35rem;
+  box-shadow: 0 2px 12px var(--accent-glow);
+}
+
+.modal-source-link:hover,
+.modal-source-link:focus-visible {
+  filter: brightness(1.08);
+  outline: 2px solid var(--accent-bright);
+  outline-offset: 2px;
+}
+
+.modal-source-url {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--muted);
+  word-break: break-all;
+  margin-top: 0.15rem;
+}
+
+.modal-inline-link {
+  color: var(--accent-bright);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  word-break: break-all;
+}
+
+[data-theme="light"] .modal-inline-link {
   color: var(--accent-2);
 }
 
@@ -1316,4 +1464,100 @@ main.wrap {
   background: rgba(129, 140, 248, 0.08);
   border-radius: 10px;
   border: 1px solid var(--border);
+}
+
+/* Joke “shady 90s website” mode — toggle in header */
+html.scam-site {
+  --font-body: "Comic Sans MS", "Comic Sans", "Chalkboard SE", cursive, system-ui;
+  --font-display: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+html.scam-site body {
+  background: #000080 repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 0, 0.04) 2px,
+    rgba(255, 255, 0, 0.04) 4px
+  );
+  color: #ffff00;
+}
+
+html.scam-site .site-title {
+  font-family: Impact, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #ff00ff;
+  text-shadow:
+    3px 3px 0 #00ffff,
+    -1px -1px 0 #ffff00;
+  animation: scam-rainbow 4s linear infinite;
+}
+
+@keyframes scam-rainbow {
+  0% {
+    filter: hue-rotate(0deg);
+  }
+  100% {
+    filter: hue-rotate(360deg);
+  }
+}
+
+html.scam-site .dog-card,
+html.scam-site .modal-panel,
+html.scam-site .toolbar-filters,
+html.scam-site .compat-banner {
+  border: 3px ridge #00ff00;
+  background: #0d280d;
+  box-shadow:
+    0 0 0 2px #ff0000,
+    6px 6px 0 #000;
+}
+
+html.scam-site .dog-card__btn,
+html.scam-site .modal-source-link {
+  background: linear-gradient(180deg, #ff0000, #cc0000) !important;
+  color: #ffff00 !important;
+  font-weight: 900;
+  text-transform: uppercase;
+  border: 3px outset #ff6666 !important;
+  animation: scam-blink 1.5s step-end infinite;
+}
+
+@keyframes scam-blink {
+  50% {
+    opacity: 0.88;
+  }
+}
+
+html.scam-site .badge--match {
+  background: #00ff00 !important;
+  color: #000080 !important;
+  border: 2px solid #ff00ff !important;
+  text-shadow: none !important;
+}
+
+html.scam-site .badge--cuddle {
+  background: #ff00ff !important;
+  color: #ffff00 !important;
+  border: 2px solid #00ffff !important;
+}
+
+html.scam-site .site-footer {
+  border-top: 4px double #00ff00;
+  font-style: italic;
+}
+
+html.scam-site a {
+  color: #00ffff;
+  text-decoration: underline wavy #ff00ff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.scam-site .site-title,
+  html.scam-site .dog-card__btn,
+  html.scam-site .modal-source-link {
+    animation: none;
+    filter: none;
+  }
 }
