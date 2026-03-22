@@ -79,7 +79,12 @@
       "id": "adoptapet-tula-47511513",
       "name": "Tula",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1293551977",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1293551993",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1293552006",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1293552020"
+      ],
       "age": "2 years 1 month",
       "ageSortMonths": 25,
       "sex": "Female",
@@ -108,7 +113,9 @@
       "name": "Milo",
       "petId": "D2026015",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280914131"
+      ],
       "age": "7 years 2 months (adult)",
       "ageSortMonths": 86,
       "sex": "Male",
@@ -137,7 +144,12 @@
       "id": "adoptapet-latte-45340977",
       "name": "Latte",
       "breed": "Chihuahua / Terrier (small)",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1243116206",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1284923897",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1284923923",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1284923949"
+      ],
       "age": "1 year",
       "ageSortMonths": 12,
       "sex": "Male",
@@ -166,7 +178,11 @@
       "id": "adoptapet-pebbles-47538840",
       "name": "Pebbles",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1294209966",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1294209975",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1294209981"
+      ],
       "age": "5 years",
       "ageSortMonths": 60,
       "sex": "Female",
@@ -195,7 +211,12 @@
       "name": "Jelly",
       "petId": "22262571-14879",
       "breed": "Chihuahua / Terrier (medium)",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1290964991",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1290965000",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1290965006",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1290965012"
+      ],
       "age": "Puppy (exact months not stated)",
       "ageSortMonths": 6,
       "sex": "Female",
@@ -225,7 +246,12 @@
       "name": "Nacho",
       "petId": "ps_2604356-2401853",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168781",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168790",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168796",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1280168802"
+      ],
       "age": "5 months old (puppy)",
       "ageSortMonths": 5,
       "sex": "Male",
@@ -254,7 +280,9 @@
       "id": "adoptapet-magnolia-47532377",
       "name": "Magnolia",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1294057210"
+      ],
       "age": "4 months (puppy)",
       "ageSortMonths": 4,
       "sex": "Female",
@@ -282,7 +310,9 @@
       "id": "adoptapet-juniper-47532370",
       "name": "Juniper",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1294057029"
+      ],
       "age": "4 months (puppy)",
       "ageSortMonths": 4,
       "sex": "Female",
@@ -310,7 +340,12 @@
       "id": "adoptapet-corazon-45855872",
       "name": "Corazón",
       "breed": "Chihuahua",
-      "photoUrls": [],
+      "photoUrls": [
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1254514818",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1254514838",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1254514870",
+        "https://media.adoptapet.com/image/upload/d_Fallback-Photo_Dog-v3.png/c_fit,h_350,dpr_2/f_auto,q_auto/1254514902"
+      ],
       "age": "1 year",
       "ageSortMonths": 12,
       "sex": "Female",
